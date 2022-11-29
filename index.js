@@ -23,9 +23,11 @@ app.post('/register', function(request, response){
                 users.insert({email, password: hashPassword, name, phone, desired, orderMass});
                 response.json({email, password: hashPassword, name, phone, desired , orderMass});
             }
+            return response.status(500).json({err: "ОШИБКА", server: request.body.data})
         }); 
     } catch (e) {
         console.log(e);
+        return response.status(500).json({err: "ОШИБКА в catch", server: request.body.data})
     }
 });
 app.post('/login', (request, response)=>{
@@ -43,9 +45,11 @@ app.post('/login', (request, response)=>{
             } else if (!doc){
                 return response.status(400).json("Пользователь с таким email не существует")
             }
+            return response.status(500).json({err: "ОШИБКА", server: request.body.data})
         }); 
     } catch (e) {
         console.log(e);
+        return response.status(500).json({err: "ОШИБКА в catch", server: request.body.data})
     }
 })
 app.post('/adminLogin', (request, response)=>{
@@ -60,9 +64,11 @@ app.post('/adminLogin', (request, response)=>{
                     response.json(doc.email)
                 }
             }
+            return response.status(500).json({err: "ОШИБКА", server: request.body.data})
         });  
     } catch (e) {
         console.log(e);
+        return response.status(500).json({err: "ОШИБКА в catch", server: request.body.data})
     }
 })
 app.post('/bag', (request, response)=>{
@@ -75,9 +81,11 @@ app.post('/bag', (request, response)=>{
                 users.update({email: email}, {email: email, password: doc.password, name: doc.name, phone: doc.phone, desired: [], orderMass: orderMass}, {});
                 users.loadDatabase();
             }
+            return response.status(500).json({err: "ОШИБКА", server: request.body.data})
         }); 
     } catch (e) {
         console.log(e);
+        return response.status(500).json({err: "ОШИБКА в catch", server: request.body.data})
     }
 
 })
@@ -89,9 +97,11 @@ app.post('/getFullOrderLoginAdmin', (request, response)=>{
                 users.update({email: request.body.data.email}, {email: request.body.data.email, password: doc.password, name: doc.name, phone: doc.phone, desired: doc.desired, orderMass: request.body.data.order}, {});
                 users.loadDatabase();
             }
+            return response.status(500).json({err: "ОШИБКА", server: request.body.data})
         }); 
     } catch (e) {
         console.log(e);
+        return response.status(500).json({err: "ОШИБКА в catch", server: request.body.data})
     }
 
 })
@@ -101,9 +111,11 @@ app.get('/overwriteMassAdmin', (request, response)=>{
             if (doc) {
                 response.json({doc})
             }
+            return response.status(500).json({err: "ОШИБКА", server: request.body.data})
         }); 
     } catch (e) {
         console.log(e);
+        return response.status(500).json({err: "ОШИБКА в catch", server: request.body.data})
     }
 
 })
@@ -113,26 +125,15 @@ app.post('/overwriteMass', (request, response)=>{
             if (doc) {
                 response.json({doc})
             }
+            return response.status(500).json({err: "ОШИБКА", server: request.body.data})
         }); 
     } catch (e) {
         console.log(e);
+        return response.status(500).json({err: "ОШИБКА в catch", server: request.body.data})
     }
 
 })
 
-// https    
-//   .createServer(
-//     {
-//       key: fs.readFileSync("./sslcert/key.pem"),
-//       cert: fs.readFileSync("./sslcert/cert.pem"),
-//     },
-//     app
-//   )
-//   .listen(5000, function () {
-//     console.log(
-//       "Example app listening on port 5000! Go to https://localhost:5000/"
-//     );
-//   });
 const start = async ()=>{
 try {
     app.listen(PORT, ()=>{
