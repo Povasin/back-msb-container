@@ -3,13 +3,22 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5000
 const http = require('http');
+const cors = require('cors')
 const bcrypt = require('bcrypt');
+var bodyParser = require('body-parser');
 app.use(express.static(path.resolve(__dirname, './')));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
+app.use(cors())
 app.use(express.json()) 
 const Datastore = require('nedb');
 const users = new Datastore({filename : './server/orders', autoload: true });
 users.loadDatabase();
-
+app.get('/', (req, res) => {  
+    res.sendFile(path.resolve(__dirname, './index.html')); 
+});
 app.post('/register', function(request, response){  
      try {
         const {email, password, name, phone, desired, orderMass} = request.body.data.order;
@@ -30,7 +39,7 @@ app.post('/register', function(request, response){
 });
 app.post('/login', (request, response)=>{
     try {
-        console.log(request.body);
+        console.log(request);
         const {email, password} = request.body.data.order;
         users.findOne({email: email},function(err, doc) { 
             if (doc) {
