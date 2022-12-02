@@ -32,7 +32,7 @@ app.post('/register', function(request, response){
 });
 app.post('/login', (request, response)=>{
     try {
-        console.log(request.body.data);
+        console.log(request);
         const {email, password} = request.body.data.order;
         users.findOne({email: email},function(err, doc) { 
             if (doc) {
