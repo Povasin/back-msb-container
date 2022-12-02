@@ -9,9 +9,7 @@ app.use(express.json())
 const Datastore = require('nedb');
 const users = new Datastore({filename : './server/orders', autoload: true });
 users.loadDatabase();
-app.get('/', (req, res) => {  
-    res.sendFile(path.resolve(__dirname, './index.html')); 
-});
+
 app.post('/register', function(request, response){  
      try {
         const {email, password, name, phone, desired, orderMass} = request.body.data.order;
