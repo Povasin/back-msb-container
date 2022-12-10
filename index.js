@@ -4,7 +4,6 @@ const app = express();
 const PORT = process.env.PORT || 5000
 const http = require('http');
 const bcrypt = require('bcrypt');
-var bodyParser = require('body-parser');
 app.use(express.static(path.resolve(__dirname, './')));
 app.get('/', (req, res) => {  
     res.sendFile(path.resolve(__dirname, './index.html')); 
