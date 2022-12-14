@@ -15,7 +15,8 @@ users.loadDatabase();
 app.post('/register', function(request, response){  
      try {
         const {email, password, name, phone, desired, orderMass} = request.body;
-        users.findOne({email: email}, function(err, doc) { 
+         console.log(request);
+         users.findOne({email: email}, function(err, doc) { 
             if (doc) {
                 return response.status(400).json("Пользователь с таким email уже существует")
             } else{
@@ -33,6 +34,7 @@ app.post('/register', function(request, response){
 app.post('/login', (request, response)=>{
     try {
         const {email, password} = request.body;
+        console.log(request);
         users.findOne({email: email},function(err, doc) { 
             if (doc) {
                 const validPassword = bcrypt.compareSync(password, doc.password)
@@ -54,6 +56,7 @@ app.post('/login', (request, response)=>{
 app.post('/adminLogin', (request, response)=>{
     try {
         const {email, password} = request.body;
+         console.log(request);
         users.findOne({email: email},function(err, doc) { 
             if (doc) {
                 const validPassword = bcrypt.compareSync(password, doc.password)
@@ -73,6 +76,7 @@ app.post('/adminLogin', (request, response)=>{
 app.post('/bag', (request, response)=>{
     try {
         const {email,orderMass } = request.body;
+         console.log(request);
         users.findOne({email: email},function(err, doc) { 
             if (doc) {
                 doc.orderMass = orderMass 
