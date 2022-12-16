@@ -99,7 +99,7 @@ app.post('/getFullOrderLoginAdmin', (request, response)=>{
     try {
         users.findOne({email: request.body.email},function(err, doc) { 
             if (doc) {
-                response.json('ok')
+                response.json( {message: 'ok'})
                 users.update({email: request.body.email}, {email: request.body.email, password: doc.password, name: doc.name, phone: doc.phone, desired: doc.desired, orderMass: request.body}, {});
                 users.loadDatabase();
             }
