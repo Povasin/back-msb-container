@@ -52,6 +52,7 @@ app.post('/login', (request, response)=>{
                     response.json({doc})
                 }
             } else if (!doc){
+                 console.log(email);
                 return response.status(400).json("Пользователь с таким email не существует")
             }
             return response.status(500).json({err: "ОШИБКА", server: request.body})
