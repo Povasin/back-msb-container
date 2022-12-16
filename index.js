@@ -40,6 +40,7 @@ app.post('/register', function(request, response){
 app.post('/login', (request, response)=>{
     try {
         const {email, password} = request.body;
+        console.log(request.body)
         users.findOne({email: email},function(err, doc) { 
             if (doc) {
                 const validPassword = bcrypt.compareSync(password, doc.password)
