@@ -75,7 +75,7 @@ app.post('/adminLogin', (request, response)=>{
                     response.json(doc.email)
                 }
             }
-            return response.status(500).json({err: "ОШИБКА", server: request.body})
+            return response.status(500).json({{message: "чего?"})
         });  
     } catch (e) {
         console.log(e);
