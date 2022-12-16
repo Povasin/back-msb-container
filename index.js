@@ -5,9 +5,6 @@ const PORT = process.env.PORT || 5000
 const http = require('http');
 const bcrypt = require('bcrypt');
 app.use(express.static(path.resolve(__dirname, './')));
-app.get('/', (req, res) => {  
-    res.sendFile(path.resolve(__dirname, './index.html')); 
-});
 app.use(express.json()) 
 const Datastore = require('nedb');
 const users = new Datastore({filename : './server/orders', autoload: true });
