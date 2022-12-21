@@ -46,7 +46,7 @@ app.post('/login', (request, response)=>{
                 if (!validPassword) {
                     return response.status(400).json( {message:`Введен неверный пароль`}) 
                 } else{
-                    response.json({email: doc.email, name: doc.name, phone: doc.phone, orderMass: doc.orderMass})
+                    response.json({...doc.email, ...doc.name, ...doc.phone, ...doc.orderMass})
                 }
             } else if (!doc){
                 return response.status(400).json({message: "Пользователь с таким email не существует"})
@@ -67,7 +67,7 @@ app.post('/adminLogin', (request, response)=>{
                 if (!validPassword) {
                     return response.status(400).json( {message: `Введен неверный пароль`})
                 } else{
-                    response.json(doc.email)
+                    response.json({ ...doc.email})
                 }
             }
             return response.status(500).json({err: "ОШИБКА", server: request.body})
@@ -84,7 +84,7 @@ app.post('/bag', (request, response)=>{
             if (doc) {
                 doc.orderMass = orderMass 
                 response.json({doc})
-                users.update({email: email}, {email: email, password: doc.password, name: doc.name, phone: doc.phone, desired: [], orderMass: orderMass}, {});
+                users.update({email: email}, {email: email, password: doc.password, name: doc.name, phone: doc.phone, orderMass: orderMass}, {});
                 users.loadDatabase();
             }
             return response.status(500).json({err: "ОШИБКА", server: request.body})
@@ -100,7 +100,7 @@ app.post('/getFullOrderLoginAdmin', (request, response)=>{
         users.findOne({email: request.body.email},function(err, doc) { 
             if (doc) {
                 response.json( {message: 'ok'})
-                users.update({email: request.body.email}, {email: request.body.email, password: doc.password, name: doc.name, phone: doc.phone, desired: doc.desired, orderMass: request.body}, {});
+                users.update({email: request.body.email}, {email: request.body.email, password: doc.password, name: doc.name, phone: doc.phone, orderMass: request.body}, {});
                 users.loadDatabase();
             }
             return response.status(500).json({err: "ОШИБКА", server: request.body})
@@ -129,7 +129,7 @@ app.post('/overwriteMass', (request, response)=>{
     try {
         users.findOne({email:request.body},function(err, doc) { 
             if (doc) {
-                response.json({doc})
+                response.json({...doc.email, ...doc.name, ...doc.phone, ...doc.orderMass})
             }
             return response.status(500).json({err: "ОШИБКА", server: request.body})
         }); 
