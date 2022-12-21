@@ -46,7 +46,7 @@ app.post('/login', (request, response)=>{
                 if (!validPassword) {
                     return response.status(400).json( {message:`Введен неверный пароль`}) 
                 } else{
-                    response.json({...doc.email, ...doc.name, ...doc.phone, ...doc.orderMass})
+                    response.json({email: doc.email, name: doc.name, phone: doc.phone, orderMass: doc.orderMass})
                 }
             } else if (!doc){
                 return response.status(400).json({message: "Пользователь с таким email не существует"})
@@ -67,7 +67,7 @@ app.post('/adminLogin', (request, response)=>{
                 if (!validPassword) {
                     return response.status(400).json( {message: `Введен неверный пароль`})
                 } else{
-                    response.json({ ...doc.email})
+                    response.json({email: doc.email})
                 }
             }
             return response.status(500).json({err: "ОШИБКА", server: request.body})
@@ -83,7 +83,7 @@ app.post('/bag', (request, response)=>{
         users.findOne({email: email},function(err, doc) { 
             if (doc) {
                 doc.orderMass = orderMass 
-                response.json({doc})
+                response.json({})
                 users.update({email: email}, {email: email, password: doc.password, name: doc.name, phone: doc.phone, orderMass: orderMass}, {});
                 users.loadDatabase();
             }
@@ -129,7 +129,7 @@ app.post('/overwriteMass', (request, response)=>{
     try {
         users.findOne({email:request.body},function(err, doc) { 
             if (doc) {
-                response.json({...doc.email, ...doc.name, ...doc.phone, ...doc.orderMass})
+                response.json({orderMass: doc.orderMass})
             }
             return response.status(500).json({err: "ОШИБКА", server: request.body})
         }); 
