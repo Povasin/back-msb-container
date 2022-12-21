@@ -21,14 +21,14 @@ const users = new Datastore({filename : './server/orders', autoload: true });
 users.loadDatabase();
 app.post('/register', function(request, response){  
      try {
-        const {email, password, name, phone, desired, orderMass} = request.body;
+        const {email, password, name, phone, orderMass} = request.body;
         users.findOne({email: email}, function(err, doc) { 
             if (doc) {
                 return response.status(400).json( {message: "Пользователь с таким email уже существует"})
             } else{
                 const hashPassword = bcrypt.hashSync(password, 7);
-                users.insert({email, password: hashPassword, name, phone, desired, orderMass});
-                response.json({email, password: hashPassword, name, phone, desired , orderMass});
+                users.insert({email, password: hashPassword, name, phone, orderMass});
+                response.json({email, name, phone, orderMass});
             }
             return response.status(500).json({err: "ОШИБКА", server: request.body})
         }); 
@@ -46,7 +46,7 @@ app.post('/login', (request, response)=>{
                 if (!validPassword) {
                     return response.status(400).json( {message:`Введен неверный пароль`}) 
                 } else{
-                    response.json({doc})
+                    response.json({email: doc.email, name: doc.name, phone: doc.phone, orderMass: doc.orderMass})
                 }
             } else if (!doc){
                 return response.status(400).json({message: "Пользователь с таким email не существует"})
