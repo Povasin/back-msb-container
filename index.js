@@ -21,12 +21,13 @@ const users = new Datastore({filename : './server/orders', autoload: true });
 users.loadDatabase();
 app.post('/register', function(request, response){  
      try {
-        console.log(request.body);
+      
         const {email, password, name, phone, orderMass} = request.body;
         users.findOne({email: email}, function(err, doc) { 
             if (doc) {
                 return response.status(400).json( {message: "Пользователь с таким email уже существует"})
             } else{
+                console.log({email, name, phone, orderMass});
                 const hashPassword = bcrypt.hashSync(password, 7);
                 users.insert({email, password: hashPassword, name, phone, orderMass});
                 return response.json({email, name, phone, orderMass});
