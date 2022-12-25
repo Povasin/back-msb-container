@@ -38,6 +38,7 @@ app.post('/register', function(request, response){
 });
 app.post('/login', (request, response)=>{
     try {
+        console.log(request.body)
         const {email, password} = request.body;
         users.findOne({email: email},function(err, doc) { 
             if (doc) {
