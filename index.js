@@ -45,12 +45,8 @@ app.post('/login', (request, response)=>{
                 const validPassword = bcrypt.compareSync(password, doc.password)
                 if (!validPassword) {
                     return response.status(400).json( {message:`Введен неверный пароль`}) 
-                } else{
-                    return response.json({email: doc.email, name: doc.name, phone: doc.phone, orderMass: doc.orderMass})
-                }
-            } else if (!doc){
-                return response.status(400).json({message: "Пользователь с таким email не существует"})
-            }
+                } else return response.json({email: doc.email, name: doc.name, phone: doc.phone, orderMass: doc.orderMass})
+            } else if (!doc) return response.status(400).json({message: "Пользователь с таким email не существует"})
         }); 
     } catch (e) {
         console.log(e);
@@ -65,9 +61,7 @@ app.post('/adminLogin', (request, response)=>{
                 const validPassword = bcrypt.compareSync(password, doc.password)
                 if (!validPassword) {
                     return response.status(400).json( {message: `Введен неверный пароль`})
-                } else{
-                    return response.json({email: doc.email})
-                }
+                } else return response.json({email: doc.email})
             }
         });  
     } catch (e) {
