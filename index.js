@@ -28,9 +28,8 @@ app.post('/register', function(request, response){
             } else{
                 const hashPassword = bcrypt.hashSync(password, 7);
                 users.insert({email, password: hashPassword, name, phone, orderMass});
-                response.json({email, name, phone, orderMass});
+                return response.json({email, name, phone, orderMass});
             }
-            return response.status(500).json({err: "ОШИБКА", server: request.body})
         }); 
     } catch (e) {
         console.log(e);
@@ -46,12 +45,11 @@ app.post('/login', (request, response)=>{
                 if (!validPassword) {
                     return response.status(400).json( {message:`Введен неверный пароль`}) 
                 } else{
-                    response.json({email: doc.email, name: doc.name, phone: doc.phone, orderMass: doc.orderMass})
+                    return response.json({email: doc.email, name: doc.name, phone: doc.phone, orderMass: doc.orderMass})
                 }
             } else if (!doc){
                 return response.status(400).json({message: "Пользователь с таким email не существует"})
             }
-            return response.status(500).json({err: "ОШИБКА", server: request.body})
         }); 
     } catch (e) {
         console.log(e);
@@ -67,10 +65,9 @@ app.post('/adminLogin', (request, response)=>{
                 if (!validPassword) {
                     return response.status(400).json( {message: `Введен неверный пароль`})
                 } else{
-                    response.json({email: doc.email})
+                    return response.json({email: doc.email})
                 }
             }
-            return response.status(500).json({err: "ОШИБКА", server: request.body})
         });  
     } catch (e) {
         console.log(e);
@@ -82,12 +79,10 @@ app.post('/bag', (request, response)=>{
         const {email,orderMass } = request.body;
         users.findOne({email: email},function(err, doc) { 
             if (doc) {
-                doc.orderMass = orderMass 
-                response.json({})
                 users.update({email: email}, {email: email, password: doc.password, name: doc.name, phone: doc.phone, orderMass: orderMass}, {});
                 users.loadDatabase();
+                return response.json({})
             }
-            return response.status(500).json({err: "ОШИБКА", server: request.body})
         }); 
     } catch (e) {
         console.log(e);
@@ -99,11 +94,10 @@ app.post('/getFullOrderLoginAdmin', (request, response)=>{
     try {
         users.findOne({email: request.body.email},function(err, doc) { 
             if (doc) {
-                response.json( {message: 'ok'})
                 users.update({email: request.body.email}, {email: request.body.email, password: doc.password, name: doc.name, phone: doc.phone, orderMass: request.body}, {});
                 users.loadDatabase();
+                return response.json( {message: 'ok'})
             }
-            return response.status(500).json({err: "ОШИБКА", server: request.body})
         }); 
     } catch (e) {
         console.log(e);
@@ -113,12 +107,7 @@ app.post('/getFullOrderLoginAdmin', (request, response)=>{
 })
 app.get('/overwriteMassAdmin', (request, response)=>{
     try {
-        users.find({},function(err, doc) { 
-            if (doc) {
-                response.json({doc})
-            }
-            return response.status(500).json({err: "ОШИБКА", server: request.body})
-        }); 
+        users.find({},function(err, doc) {return  doc && response.json({doc})}); 
     } catch (e) {
         console.log(e);
         return response.status(500).json({err: "ОШИБКА в catch", server: request.body})
@@ -127,12 +116,7 @@ app.get('/overwriteMassAdmin', (request, response)=>{
 })
 app.post('/overwriteMass', (request, response)=>{
     try {
-        users.findOne({email:request.body},function(err, doc) { 
-            if (doc) {
-                response.json({orderMass: doc.orderMass})
-            }
-            return response.status(500).json({err: "ОШИБКА", server: request.body})
-        }); 
+        users.findOne({email:request.body},function(err, doc) {return doc && response.json({orderMass: doc.orderMass})}); 
     } catch (e) {
         console.log(e);
         return response.status(500).json({err: "ОШИБКА в catch", server: request.body})
