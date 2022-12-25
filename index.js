@@ -21,6 +21,7 @@ const users = new Datastore({filename : './server/orders', autoload: true });
 users.loadDatabase();
 app.post('/register', function(request, response){  
      try {
+        console.log(request.body);
         const {email, password, name, phone, orderMass} = request.body;
         users.findOne({email: email}, function(err, doc) { 
             if (doc) {
