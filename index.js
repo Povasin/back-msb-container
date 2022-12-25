@@ -30,7 +30,7 @@ app.post('/register', function(request, response){
                 console.log({email, name, phone});
                 const hashPassword = bcrypt.hashSync(password, 7);
                 users.insert({email, password: hashPassword, name, phone, orderMass: []});
-                return response.json({email, name, phone, orderMass: [], id: doc. _id});
+                users.findOne({email: email}, function(err, doc) {return response.json({email, name, phone, orderMass: [], id: doc._id})})
             }
         }); 
     } catch (e) {
