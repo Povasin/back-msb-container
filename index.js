@@ -30,7 +30,7 @@ app.post('/register', function(request, response){
                 console.log({email, name, phone});
                 const hashPassword = bcrypt.hashSync(password, 7);
                 users.insert({email, password: hashPassword, name, phone, orderMass: []});
-                return response.json({email, name, phone, orderMass: []});
+                return response.json({email, name, phone, orderMass: [], id: doc. _id});
             }
         }); 
     } catch (e) {
@@ -46,7 +46,7 @@ app.post('/login', (request, response)=>{
                 const validPassword = bcrypt.compareSync(password, doc.password)
                 if (!validPassword) {
                     return response.status(400).json( {message:`Введен неверный пароль`}) 
-                } else return response.json({email: doc.email, name: doc.name, phone: doc.phone, orderMass: doc.orderMass})
+                } else return response.json({email: doc.email, name: doc.name, phone: doc.phone, orderMass: doc.orderMass, id: doc._id})
             } else if (!doc) return response.status(400).json({message: "Пользователь с таким email не существует"})
         }); 
     } catch (e) {
