@@ -72,10 +72,12 @@ app.post('/adminLogin', (request, response)=>{
 })
 app.post('/bag', (request, response)=>{
     try {
-        const {email,orderMass } = request.body;
+        const {email,body} = request.body;
         users.findOne({email: email},function(err, doc) { 
             if (doc) {
-                users.update({email: email}, {email: email, password: doc.password, name: doc.name, phone: doc.phone, orderMass: orderMass}, {});
+                console.log(doc);
+                console.log({...doc.orderMass, ...body });
+                users.update({email: email}, {...doc, orderMass: {...doc.orderMass, ...body }});
                 users.loadDatabase();
                 return response.json({})
             }
