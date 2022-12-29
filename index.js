@@ -73,6 +73,8 @@ app.post('/adminLogin', (request, response)=>{
 app.post('/bag', (request, response)=>{
     try {
         const {email, ...body} = request.body;
+        console.log(email);
+        console.log(body);
         users.findOne({email: email},function(err, doc) { 
             if (doc) {
                 console.log(doc);
