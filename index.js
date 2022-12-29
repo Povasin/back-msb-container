@@ -81,7 +81,7 @@ app.post('/bag', (request, response)=>{
                 console.log({...doc.orderMass, ...body });
                 users.update({email: email}, {...doc, orderMass: {...doc.orderMass, ...body }});
                 users.loadDatabase();
-                return response.json({})
+                return response.json({...doc.orderMass, ...body })
             }
         }); 
     } catch (e) {
@@ -115,6 +115,7 @@ app.get('/overwriteMassAdmin', (request, response)=>{
 
 })
 app.post('/overwriteMass', (request, response)=>{
+    console.log(request.body);
     try {
         users.findOne({email:request.body},function(err, doc) {return doc && response.json({orderMass: doc.orderMass})}); 
     } catch (e) {
