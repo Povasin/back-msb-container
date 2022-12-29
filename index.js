@@ -117,7 +117,7 @@ app.get('/overwriteMassAdmin', (request, response)=>{
 app.post('/overwriteMass', (request, response)=>{
     console.log(request.body);
     try {
-        users.findOne({email:request.body},function(err, doc) {return doc && response.json({orderMass: doc.orderMass})}); 
+        users.findOne({email:request.body.email},function(err, doc) {return doc && response.json({orderMass: doc.orderMass})}); 
     } catch (e) {
         console.log(e);
         return response.status(500).json({err: "ОШИБКА в catch", server: request.body})
