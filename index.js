@@ -79,7 +79,7 @@ app.post('/bag', (request, response)=>{
             if (doc) {
                 console.log(doc);
                 console.log({...doc.orderMass, ...body });
-                users.update({email: email}, {...doc, orderMass: [...doc.orderMass, ...body]});
+                users.update({email: email}, {...doc, orderMass: [...doc.orderMass, {...body} ]});
                 users.loadDatabase();
                 return response.json({...doc.orderMass, ...body })
             }
